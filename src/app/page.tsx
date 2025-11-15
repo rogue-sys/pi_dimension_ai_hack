@@ -13,8 +13,7 @@ export default async function PiDimension() {
   if (data?.user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <ProfileForm
-         
+        <ProfileForm 
         />
       </div>
     );

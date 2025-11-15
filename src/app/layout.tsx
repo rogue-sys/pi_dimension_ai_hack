@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Poppins, Roboto_Mono } from "next/font/google";
-import NextTopLoader from 'nextjs-toploader';
+import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,13 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${poppins.variable} ${robotoMono.variable}`}
-    >
+    <html lang="en" className={`${poppins.variable} ${robotoMono.variable}`}>
       <body className="bg-zinc-950 text-white ">
-        <NextTopLoader  showSpinner={false} color="#BA8CFC"/>
+        <NextTopLoader showSpinner={false} color="#BA8CFC" />
         {children}
+        <Toaster />
       </body>
     </html>
   );
