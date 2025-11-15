@@ -23,9 +23,13 @@ import {
 } from "@/utils/validations/profile.validation";
 import { saveCoreIdentity } from "@/actions/profile.action";
 import toast from "react-hot-toast";
+import { UserProfile } from "@/models/profile.model";
+import { BiArrowBack } from "react-icons/bi";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type CoreIdentityStepProps = {
-  initialData?: FullProfileData;
+  initialData?: UserProfile;
 };
 
 export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
@@ -34,6 +38,8 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
     null
   );
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
   const [additionalPreviews, setAdditionalPreviews] = useState<string[]>([]);
@@ -59,12 +65,40 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
   });
 
   useEffect(() => {
-    if (initialData) {
-      form.reset({
-        ...initialData,
-        interests: initialData.interests || [],
+    if (!initialData) return;
+
+    form.reset({
+      ...initialData,
+      interests: initialData.interests || [],
+    });
+
+    setInterestsInput((initialData.interests || []).join(", "));
+
+    if (initialData.profile_pic) {
+      setProfilePicPreview(initialData.profile_pic);
+
+      fetch(initialData.profile_pic)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], "profile_pic.jpg", { type: blob.type });
+          setProfilePicFile(file);
+        });
+    }
+
+    if (initialData.imageUrls && initialData.imageUrls.length > 0) {
+      setAdditionalPreviews(initialData.imageUrls);
+
+      Promise.all(
+        initialData.imageUrls.map(async (url, i) => {
+          const res = await fetch(url);
+          const blob = await res.blob();
+          return new File([blob], `additional_${i}.jpg`, {
+            type: blob.type,
+          });
+        })
+      ).then((files) => {
+        setAdditionalFiles(files);
       });
-      setInterestsInput((initialData.interests || []).join(", "));
     }
   }, [initialData, form]);
 
@@ -158,8 +192,15 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardContent className="p-0 space-y-6">
-              <h2 className="text-xl font-semibold text-purple-200">
-                Step 1: Core Identity
+              <h2 className="text-xl font-semibold text-purple-200 ">
+                {initialData ? (
+                  <span className="flex items-center flex-wrap gap-2">
+                    <BiArrowBack className="cursor-pointer" onClick={() => router.back()} />
+                    Customize your profile
+                  </span>
+                ) : (
+                  " Step 1: Core Identity"
+                )}
               </h2>
 
               <div className="flex justify-center mb-5">
@@ -421,6 +462,8 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
                     Saving...
                   </>
+                ) : initialData ? (
+                  "Save"
                 ) : (
                   "→ Next: Mental Configuration"
                 )}

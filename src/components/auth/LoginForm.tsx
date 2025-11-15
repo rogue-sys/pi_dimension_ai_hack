@@ -61,7 +61,7 @@ const LoginForm = () => {
       setError(msg);
       setLoading(false);
     } else {
-      window.location.href = "/";
+      window.location.href = "/login";
     }
   };
 
