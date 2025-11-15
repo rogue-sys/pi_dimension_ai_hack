@@ -5,6 +5,5 @@ export type SafeUserType = {
   profile_url?: string;
   role: "user" | "admin" | "moderator";
   provider: "credential" | "google" | "github" | "facebook";
-  emailVerified: boolean;
   createdAt: string | null;
 };

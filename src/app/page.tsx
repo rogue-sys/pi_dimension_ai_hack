@@ -1,15 +1,21 @@
 import Welcome from "@/components/auth/Welcome";
 import Logout from "@/components/buttons/Logout";
+import ProfileForm from "@/components/forms/ProfileForm";
 import { getProfile } from "@/services/common.service";
 
 export default async function PiDimension() {
   const { data, success, error } = await getProfile();
 
   if (data?.profile) {
+    return <div>{data?.profile?.gender}</div>;
+  }
+
+  if (data?.user) {
     return (
-      <div>
-        <p>{data?.profile?.email}</p>
-        <Logout />
+      <div className="flex items-center justify-center min-h-screen">
+        <ProfileForm
+         
+        />
       </div>
     );
   }
