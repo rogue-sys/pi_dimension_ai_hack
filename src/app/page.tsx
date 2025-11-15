@@ -2,19 +2,24 @@ import Welcome from "@/components/auth/Welcome";
 import Logout from "@/components/buttons/Logout";
 import ProfileForm from "@/components/forms/ProfileForm";
 import { getProfile } from "@/services/common.service";
+import Link from "next/link";
 
 export default async function PiDimension() {
   const { data, success, error } = await getProfile();
 
   if (data?.profile) {
-    return <div>{data?.profile?.gender}</div>;
+    return (
+      <div>
+        <Link href={'/profile/edit'}>Edit</Link>
+        <Logout />
+      </div>
+    );
   }
 
   if (data?.user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <ProfileForm 
-        />
+        <ProfileForm />
       </div>
     );
   }
