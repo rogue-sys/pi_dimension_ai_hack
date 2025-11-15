@@ -49,7 +49,7 @@ const LoginForm = () => {
     });
 
     if (res?.error) {
-      console.log(res.error)
+      console.log(res)
       let msg ="Something went wrong. Please try again.";
 
       if (res.error === "EMAIL_NOT_VERIFIED")

@@ -74,7 +74,6 @@ export const authOptions: NextAuthOptions = {
             name: profile.name,
             profile_url: profile.image,
             provider: "google",
-            emailVerified: true,
             role: "user",
           });
         }
@@ -83,6 +82,7 @@ export const authOptions: NextAuthOptions = {
         token.role = existingUser.role || "user";
         token.profile_url = existingUser.profile_url;
       }
+      console.log("hellooo")
 
       return token;
     },
