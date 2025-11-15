@@ -112,12 +112,10 @@ Each detail is shown only when clicked:
 - Node API Routes (Next.js Server Actions)
 
 ### **Auth**
-- Supabase Auth **or** Firebase Auth
+- Manual Auth
 
 ### **Database**
-- Supabase  
-- OR MongoDB (using Mongoose or Prisma)  
-- OR PlanetScale
+- MongoDB (using Mongoose or Prisma)  
 
 ### **Hosting**
 - Vercel (recommended for Next.js)
@@ -128,14 +126,6 @@ Each detail is shown only when clicked:
 
 ### ✔ **The App Nobody Asked For**  
 Nobody needs an alternate-universe version of themselves — yet it’s impossible to stop exploring.
-
-### ✔ **Minimum Viable Chaos**  
-Weird coordinates, bizarre traits, absurd archetypes, and unpredictable AI generations — pure chaos.
-
-### ✔ **Productivity for the Unproductive**  
-This app is gloriously useless. Exactly what the theme wants.
-
----
 
 ## 🧪 Demo Flow (Under 4 Minutes)
 
