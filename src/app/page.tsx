@@ -1,17 +1,40 @@
 import Welcome from "@/components/auth/Welcome";
-import Logout from "@/components/buttons/Logout";
+import { ProfileMenu } from "@/components/common/ProfileMenu";
 import ProfileForm from "@/components/forms/ProfileForm";
+import AppAboutSection from "@/components/sections/AppAboutSection";
+import { Card } from "@/components/ui/card";
 import { getProfile } from "@/services/common.service";
 import Link from "next/link";
 
 export default async function PiDimension() {
   const { data, success, error } = await getProfile();
 
+  if (!success || error) {
+    return <p className="text-red-400">{error || "Something went wrong"}</p>;
+  }
+
   if (data?.profile) {
     return (
       <div>
-        <Link href={'/profile/edit'}>Edit</Link>
-        <Logout />
+        <div className="px-6 pt-6">
+          <Card className="bg-[#140a22] border-purple-700/40 p-5 shadow-lg flex-row">
+            <ProfileMenu
+              email={data?.user?.email}
+              name={data?.user?.name}
+              avatar={data?.profile?.profile_pic || data?.user?.profile_url}
+            />
+            <div className="text-purple-400">
+              <p>{data?.user?.name}</p>
+              <p>{data?.user?.email}</p>
+            </div>
+          </Card>
+        </div>
+        <div className="px-6 pt-6">
+          <Card className="bg-[#140a22] border-purple-700/40 p-5 shadow-lg flex-row ">
+            <Link className="px-5 py-2 rounded bg-purple-900 cursor-pointer text-white" href={"/realities"}>Find you in our realities</Link>
+          </Card>
+        </div>
+        <AppAboutSection latestRealities={[]} />
       </div>
     );
   }
