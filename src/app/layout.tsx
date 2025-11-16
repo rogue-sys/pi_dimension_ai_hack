@@ -1,7 +1,9 @@
+import ScrollToTop from "@/components/common/ScrollToTop";
 import "./globals.css";
 import { Poppins, Roboto_Mono } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,6 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${robotoMono.variable}`}>
       <body className="bg-zinc-950 text-white ">
+        <Suspense>
+          <ScrollToTop />
+        </Suspense>
         <NextTopLoader showSpinner={false} color="#BA8CFC" />
         {children}
         <Toaster />
