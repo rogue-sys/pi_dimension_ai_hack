@@ -34,3 +34,45 @@ export async function getUserRealities() {
         };
     }
 }
+
+export async function getRealityById(id: string) {
+    try {
+        await connectDB();
+
+        const session = await auth();
+        if (!session || !session.user?.id) {
+            return {
+                success: false,
+                error: "Unauthorized",
+                reality: null
+            };
+        }
+
+        const reality = await RealityResult.findOne({
+            _id: id,
+            userId: session.user.id,
+        });
+
+
+        if (!reality) {
+            return {
+                success: false,
+                error: "Reality not found",
+                reality: null
+            };
+        }
+
+        return {
+            success: true,
+            reality: JSON.parse(JSON.stringify(reality)) as RealityResultType,
+        };
+
+    } catch (error) {
+        console.error("Error fetching reality by ID:", error);
+        return {
+            success: false,
+            error: "Failed to fetch reality",
+            reality: null
+        };
+    }
+}
