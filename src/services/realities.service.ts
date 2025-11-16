@@ -104,7 +104,7 @@ export async function updateRealityWithActivity(id: string) {
       {
         "content": "<what he is doing now>",
         "time": "<ISO timestamp>",
-        "coordinate": "<current location>"
+        "coordinate": "latitude, longitude"
       }
     `;
 

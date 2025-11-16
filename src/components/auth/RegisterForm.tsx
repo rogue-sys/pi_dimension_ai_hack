@@ -20,6 +20,8 @@ import { motion } from "framer-motion";
 import { registerUser } from "@/actions/register.action";
 import { registerSchema } from "@/utils/validations/user.validation";
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { BiLogoGoogle } from "react-icons/bi";
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
@@ -202,7 +204,20 @@ const RegisterForm = () => {
               {response.message}
             </p>
           )}
+          <div className="flex items-center gap-3 text-purple-400">
+            <div className="grow border-t border-purple-800/50" />
+            <span className="text-xs">OR</span>
+            <div className="grow border-t border-purple-800/50" />
+          </div>
 
+          <Button
+            variant="outline"
+            className="w-full border-purple-700/40 text-purple-200 bg-[#1c0b2b] hover:bg-[#240c38]"
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+            disabled={isPending}
+          >
+            <BiLogoGoogle className="mr-2" /> Continue with Google
+          </Button>
           <p className="text-center text-sm text-purple-300">
             Already have an account?{" "}
             <Link href="/login" className="text-purple-400 hover:underline">

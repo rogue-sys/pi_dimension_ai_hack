@@ -43,13 +43,20 @@ export function ProfileMenu({
       <div
         className={`
           overflow-hidden transition-all duration-300
-          ${isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}
+          ${isOpen ? "max-h-60 mt-2 opacity-100" : "max-h-0 opacity-0"}
         `}
       >
-        <div className="flex flex-col gap-2 bg-[#140a22] rounded-xl p-3 border border-purple-700/40">
+        <div className="flex flex-col gap-2  rounded-xl p-3 ">
+          <Link
+            href="/profile"
+            className="px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-white text-center"
+            onClick={() => setIsOpen(false)}
+          >
+            View Profile
+          </Link>
           <Link
             href="/profile/edit"
-            className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-center"
+            className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-center"
             onClick={() => setIsOpen(false)}
           >
             Edit Profile
@@ -57,7 +64,7 @@ export function ProfileMenu({
 
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-center"
+            className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-center"
           >
             Logout
           </button>

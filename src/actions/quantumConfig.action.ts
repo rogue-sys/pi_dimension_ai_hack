@@ -101,7 +101,7 @@ REQUIREMENTS:
 
     const userQuery = `
 USER TRAITS:
-- Name / Appearance Tag: ${profile.name}
+- Name : ${profile.name}
 - Actual Appearance: ${profile.appearance}
 - Date of Birth: ${profile.dateOfBirth}
 - Personality Keywords: ${profile.personality}

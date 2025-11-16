@@ -476,7 +476,7 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-purple-300">
-                        Place
+                        Place / Nationality
                       </FormLabel>
                       <FormControl>
                         <Input
