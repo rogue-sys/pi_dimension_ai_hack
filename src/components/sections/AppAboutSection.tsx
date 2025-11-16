@@ -15,9 +15,9 @@ export default async function AppAboutSection() {
 
   return (
     <div className="w-full px-6 py-10 space-y-10 text-purple-200">
-      <Card className="bg-[#140a22] border-purple-700/40 shadow-lg">
+      <Card className="bg-[#140a22] border-purple-700/40 shadow-lg gap-3">
         <CardHeader>
-          <CardTitle className="text-purple-300 text-2xl">
+          <CardTitle className="text-purple-300 text-2xl ">
             Latest Generated Realities
           </CardTitle>
         </CardHeader>
@@ -26,14 +26,20 @@ export default async function AppAboutSection() {
           {realities?.length === 0 ? (
             <p className="text-purple-400 italic">No realities created yet…</p>
           ) : (
-            <ul className="flex flex-wrap gap-3">
+            <ul className="grid gap-3">
               {realities?.map((r, i) => (
                 <Link
-                  href={"/reality-result"}
+                  href={`/realities/${r._id}`}
                   key={r._id.toString()}
-                  className="cursor-pointer bg-[#1c0b2b] border border-purple-600/40 rounded-xl px-4 py-2 text-sm font-semibold text-purple-300 hover:bg-[#2a123c] transition"
+                  className="cursor-pointer bg-[#1c0b2b] border border-purple-600/40 rounded-xl px-4 py-2 text-sm font-semibold text-purple-300 hover:bg-[#2a123c] transition "
                 >
-                  Reality {i + 1}
+                  <p className="line-clamp-1">
+                    Reality {i + 1} :
+                    <span className="font-normal">
+                      {" "}
+                      {r?.generatedProfile?.backstory}
+                    </span>
+                  </p>
                 </Link>
               ))}
             </ul>
@@ -41,7 +47,6 @@ export default async function AppAboutSection() {
         </CardContent>
       </Card>
 
-      {/* ABOUT THE APP */}
       <Card className="bg-[#140a22] border-purple-700/40 shadow-lg">
         <CardHeader>
           <CardTitle className="text-purple-300 text-2xl">
