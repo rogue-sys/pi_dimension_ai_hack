@@ -4,11 +4,14 @@ export interface RealityResultType {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
   generatedProfile: {
+    archetype: string;
+    name: string;
     alternate_universe_dob: string;
     backstory: string;
     personality_traits: string[];
     location_coordinates: string;
     daily_routine: string;
+    portrait: string;
     major_achievements: string[];
     strengths: string[];
     weaknesses: string[];
@@ -36,6 +39,9 @@ const RealityResultSchema: Schema<IRealityResult> = new Schema(
     generatedProfile: {
       alternate_universe_dob: { type: String, required: true },
       backstory: { type: String, required: true },
+      name: { type: String, required: true },
+      archetype: { type: String, required: true },
+      portrait: { type: String },
       personality_traits: [{ type: String, required: true }],
       location_coordinates: { type: String, required: true },
       daily_routine: { type: String, required: true },

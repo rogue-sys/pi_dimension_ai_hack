@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "leaflet/dist/leaflet.css";
 
+/* Fix leaflet container not filling parent */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+}
 /* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
