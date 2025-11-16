@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 export const FullProfileSchema = z.object({
-  appearance: z.string().min(2, "Full name / designation is required"),
+  name: z.string().min(2, "Full name  is required"),
+  appearance: z.string().min(2, "Physical Manifestation Details is required"),
   dateOfBirth: z.string().min(1, "Date of Birth is required"),
   personality: z.string().min(5, "Personality details are required ( min 5 characters )"),
   additionalTraits: z.string().min(1, "Additional traits are required"),
@@ -10,7 +11,7 @@ export const FullProfileSchema = z.object({
   gender: z.string().min(1, "Gender is required"),
   interests: z.array(z.string().min(1)).min(1, "At least one interest is required"),
   preference: z.string().min(1, "Preference is required"),
-  place:  z.string().min(1, "place is required"),
+  place:  z.string("place is required").min(1, "place is required"),
 });
 
 export type FullProfileData = z.infer<typeof FullProfileSchema>;

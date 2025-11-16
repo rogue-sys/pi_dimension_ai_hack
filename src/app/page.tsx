@@ -17,7 +17,7 @@ export default async function PiDimension() {
           <Card className="bg-[#140a22] border-purple-700/40 p-5 shadow-lg flex-row">
             <ProfileMenu
               email={data?.user?.email}
-              name={data?.user?.name}
+              name={data?.profile?.name}
               avatar={data?.profile?.profile_pic || data?.user?.profile_url}
             />
            

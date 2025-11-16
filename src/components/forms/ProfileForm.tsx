@@ -25,7 +25,6 @@ import { saveCoreIdentity } from "@/actions/profile.action";
 import toast from "react-hot-toast";
 import { UserProfile } from "@/models/profile.model";
 import { BiArrowBack } from "react-icons/bi";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type CoreIdentityStepProps = {
@@ -61,7 +60,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
       gender: "",
       interests: [],
       preference: "",
-      place: "", // ⬅⬅⬅ NEW FIELD ADDED HERE
     },
   });
 
@@ -71,7 +69,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
     form.reset({
       ...initialData,
       interests: initialData.interests || [],
-      place: initialData.place || "", // ⬅⬅⬅ NEW FIELD RESET
     });
 
     setInterestsInput((initialData.interests || []).join(", "));
@@ -144,7 +141,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
 
     return true;
   }
-
   useEffect(() => {
     const previews: string[] = [];
     additionalFiles.forEach((file) => {
@@ -173,7 +169,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
       JSON.stringify({
         ...values,
         interests: interestsArray,
-        place: values.place, // ⬅⬅⬅ ENSURED PLACE GOES IN PAYLOAD
       })
     );
 
@@ -207,7 +202,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                 )}
               </h2>
 
-              {/* PROFILE IMAGE */}
               <div className="flex justify-center mb-5">
                 <div
                   className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-2 border-purple-500 overflow-hidden cursor-pointer hover:opacity-80"
@@ -236,7 +230,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                 />
               </div>
 
-              {/* ADDITIONAL IMAGES */}
               <FormItem>
                 <FormLabel className="text-purple-300">
                   Additional images of you (min 3)
@@ -274,14 +267,13 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
               </FormItem>
 
               <div className="grid md:grid-cols-2 gap-5 ">
-                {/* NAME */}
                 <FormField
                   control={form.control}
-                  name="appearance"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-purple-300">
-                        Full Name / Designation
+                        Full Name 
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -294,8 +286,7 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
-
-                {/* DOB */}
+                
                 <FormField
                   control={form.control}
                   name="dateOfBirth"
@@ -316,11 +307,9 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
-
-                {/* PERSONALITY */}
                 <FormField
                   control={form.control}
-                  name="personality"
+                  name="appearance"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-purple-300">
@@ -337,8 +326,25 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
-
-                {/* ADDITIONAL TRAITS */}
+                <FormField
+                  control={form.control}
+                  name="personality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-purple-300">
+                        Personality
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Your personality"
+                          className="bg-[#1c0b2b]! border-purple-600/40"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="additionalTraits"
@@ -358,8 +364,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
-
-                {/* VIBE */}
                 <FormField
                   control={form.control}
                   name="vibeStyle"
@@ -379,8 +383,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
-
-                {/* SEXUALITY */}
                 <FormField
                   control={form.control}
                   name="sexuality"
@@ -400,8 +402,6 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
-
-                {/* GENDER */}
                 <FormField
                   control={form.control}
                   name="gender"
@@ -419,19 +419,68 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="interests"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel className="text-purple-300">
+                        Interests (comma separated)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g., Reading, Music, Travel"
+                          className="bg-[#1c0b2b]! border-purple-600/40"
+                          value={interestsInput}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setInterestsInput(value);
+                            form.setValue(
+                              "interests",
+                              value
+                                .split(",")
+                                .map((s) => s.trim())
+                                .filter(Boolean),
+                              { shouldValidate: true }
+                            );
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                {/* PLACE — NEW FIELD */}
+                <FormField
+                  control={form.control}
+                  name="preference"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-purple-300">
+                        Preference
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Your preference"
+                          className="bg-[#1c0b2b]! border-purple-600/40"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="place"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-purple-300">
-                        Place / Location
+                        Place
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Where are you from?"
+                          placeholder="Your place"
                           className="bg-[#1c0b2b]! border-purple-600/40"
                           {...field}
                         />
@@ -441,13 +490,21 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                   )}
                 />
               </div>
-
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-purple-600 hover:bg-purple-700 mt-5"
+                className="w-full bg-purple-600 hover:bg-purple-700 py-5 flex items-center justify-center gap-2"
               >
-                {loading ? "Saving..." : "Save & Continue"}
+                {loading ? (
+                  <>
+                    <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+                    Saving...
+                  </>
+                ) : initialData ? (
+                  "Save"
+                ) : (
+                  "→ Next: Mental Configuration"
+                )}
               </Button>
             </CardContent>
           </form>

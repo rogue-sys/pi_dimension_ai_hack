@@ -43,6 +43,7 @@ export async function saveCoreIdentity(formData: FormData) {
       interests,
       preference,
       place,
+      name
     } = parsed.data;
 
 
@@ -89,7 +90,7 @@ export async function saveCoreIdentity(formData: FormData) {
       return { success: false, error: "Please upload at least 3 additional images." };
     }
 
-     const profile = await Profile.findOneAndUpdate(
+      await Profile.findOneAndUpdate(
       { userId },
       {
         appearance,
@@ -102,6 +103,7 @@ export async function saveCoreIdentity(formData: FormData) {
         interests,
         preference,
         place,
+        name,
         ...(profile_pic && { profile_pic }),
         ...(imageUrls.length > 0 && { imageUrls }),
       },

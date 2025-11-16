@@ -3,9 +3,10 @@ import mongoose, { Document, Types } from "mongoose";
 export interface UserProfile {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
-  profile_pic: string;    
-  imageUrls: string[];     
+  profile_pic: string;
+  imageUrls: string[];
 
+  name: string;
   appearance: string;
   dateOfBirth: string;
   personality: string;
@@ -22,7 +23,7 @@ export interface UserProfile {
   createdAt: Date;
 }
 
-export interface IUserProfile extends Document, Omit<UserProfile, "_id"> {}
+export interface IUserProfile extends Document, Omit<UserProfile, "_id"> { }
 
 const UserProfileSchema = new mongoose.Schema<IUserProfile>(
   {
@@ -35,13 +36,17 @@ const UserProfileSchema = new mongoose.Schema<IUserProfile>(
 
     profile_pic: {
       type: String,
-      required: true, 
+      required: true,
     },
-    
+    name: {
+      type: String,
+      required: true,
+    },
+
 
     imageUrls: {
       type: [String],
-      default: [], 
+      default: [],
     },
 
     appearance: {
