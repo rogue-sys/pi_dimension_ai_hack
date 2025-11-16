@@ -1,12 +1,30 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
-export default function AppAboutSection({
-  latestRealities = [],
-}: {
-  latestRealities: any[];
-}) {
+export default function AppAboutSection() {
+  const [latestRealities, setLatestRealities] = useState<any[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchRealities = async () => {
+      try {
+        const res = await fetch("/api/get-realities");
+        const data = await res.json();
+        if (data.success) {
+          // Filter out realities without a generated profile
+          setLatestRealities(data.data.filter((r: any) => r.generatedProfile));
+        }
+      } catch (err) {
+        console.error("Failed to fetch latest realities:", err);
+      }
+    };
+
+    fetchRealities();
+  }, []);
+
   return (
     <div className="w-full px-6 py-10 space-y-10 text-purple-200">
 
@@ -22,17 +40,14 @@ export default function AppAboutSection({
           {latestRealities.length === 0 ? (
             <p className="text-purple-400 italic">No realities created yet…</p>
           ) : (
-            <ul className="space-y-3">
-              {latestRealities.map((r: any, i: number) => (
+            <ul className="flex flex-wrap gap-3">
+              {latestRealities.map((r, i) => (
                 <li
-                  key={i}
-                  className="bg-[#1c0b2b] border border-purple-600/40 rounded-xl p-4 flex justify-between items-center"
+                  key={r._id}
+                  className="cursor-pointer bg-[#1c0b2b] border border-purple-600/40 rounded-xl px-4 py-2 text-sm font-semibold text-purple-300 hover:bg-[#2a123c] transition"
+                  onClick={() => router.push("/reality-result")} // Redirects to the main result page
                 >
-                  <div>
-                    <p className="font-semibold text-purple-300">{r.name}</p>
-                    <p className="text-sm text-purple-400">{r.archetype}</p>
-                  </div>
-                  <span className="text-purple-500 text-xs">{r.createdAt}</span>
+                  Reality {i + 1}
                 </li>
               ))}
             </ul>

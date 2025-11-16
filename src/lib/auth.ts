@@ -82,6 +82,7 @@ export const authOptions: NextAuthOptions = {
         token.role = existingUser.role || "user";
         token.profile_url = existingUser.profile_url;
       }
+      console.log("hellooo")
 
       return token;
     },

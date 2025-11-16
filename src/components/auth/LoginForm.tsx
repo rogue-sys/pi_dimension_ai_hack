@@ -49,7 +49,8 @@ const LoginForm = () => {
     });
 
     if (res?.error) {
-      let msg = "Something went wrong. Please try again.";
+      console.log(res)
+      let msg ="Something went wrong. Please try again.";
 
       if (res.error === "EMAIL_NOT_VERIFIED")
         msg = "Please verify your email before logging in.";
