@@ -7,15 +7,12 @@ import { getProfile } from "@/services/common.service";
 import Link from "next/link";
 
 export default async function PiDimension() {
-  const { data, success, error } = await getProfile();
+  const { data } = await getProfile();
 
-  if (!success || error) {
-    return <p className="text-red-400">{error || "Something went wrong"}</p>;
-  }
 
   if (data?.profile) {
     return (
-      <div>
+      <div className="max-w-4xl mx-auto">
         <div className="px-6 pt-6">
           <Card className="bg-[#140a22] border-purple-700/40 p-5 shadow-lg flex-row">
             <ProfileMenu
@@ -31,10 +28,15 @@ export default async function PiDimension() {
         </div>
         <div className="px-6 pt-6">
           <Card className="bg-[#140a22] border-purple-700/40 p-5 shadow-lg flex-row ">
-            <Link className="px-5 py-2 rounded bg-purple-900 cursor-pointer text-white" href={"/realities"}>Find you in our realities</Link>
+            <Link
+              className="px-5 py-2 rounded bg-purple-900 cursor-pointer text-white"
+              href={"/realities"}
+            >
+              Find you in our realities
+            </Link>
           </Card>
         </div>
-        <AppAboutSection latestRealities={[]} />
+        <AppAboutSection  />
       </div>
     );
   }

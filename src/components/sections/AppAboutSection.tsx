@@ -1,34 +1,20 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { getUserRealities } from "@/services/realities.service";
+import Link from "next/link";
 
-export default function AppAboutSection() {
-  const [latestRealities, setLatestRealities] = useState<any[]>([]);
-  const router = useRouter();
+export default async function AppAboutSection() {
+  const { realities, success, error } = await getUserRealities();
 
-  useEffect(() => {
-    const fetchRealities = async () => {
-      try {
-        const res = await fetch("/api/get-realities");
-        const data = await res.json();
-        if (data.success) {
-          // Filter out realities without a generated profile
-          setLatestRealities(data.data.filter((r: any) => r.generatedProfile));
-        }
-      } catch (err) {
-        console.error("Failed to fetch latest realities:", err);
-      }
-    };
-
-    fetchRealities();
-  }, []);
+  if (!success && !error?.includes("Unauthorized")) {
+    return (
+      <div className="w-full text-red-400 font-semibold bg-red-900/20 border border-red-700/40 p-3 rounded-xl">
+        {error || "Something went wrong while fetching realities."}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full px-6 py-10 space-y-10 text-purple-200">
-
-      {/* LATEST REALITIES */}
       <Card className="bg-[#140a22] border-purple-700/40 shadow-lg">
         <CardHeader>
           <CardTitle className="text-purple-300 text-2xl">
@@ -37,18 +23,18 @@ export default function AppAboutSection() {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {latestRealities.length === 0 ? (
+          {realities?.length === 0 ? (
             <p className="text-purple-400 italic">No realities created yet…</p>
           ) : (
             <ul className="flex flex-wrap gap-3">
-              {latestRealities.map((r, i) => (
-                <li
-                  key={r._id}
+              {realities?.map((r, i) => (
+                <Link
+                  href={"/reality-result"}
+                  key={r._id.toString()}
                   className="cursor-pointer bg-[#1c0b2b] border border-purple-600/40 rounded-xl px-4 py-2 text-sm font-semibold text-purple-300 hover:bg-[#2a123c] transition"
-                  onClick={() => router.push("/reality-result")} // Redirects to the main result page
                 >
                   Reality {i + 1}
-                </li>
+                </Link>
               ))}
             </ul>
           )}
@@ -65,11 +51,13 @@ export default function AppAboutSection() {
 
         <CardContent className="space-y-4 text-purple-200 leading-relaxed">
           <p>
-            <span className="text-purple-400 font-semibold">Pi (π)</span>{" "}
-            is a multiverse generator based on the concept that every person has
-            countless alternate versions of themselves across infinite universes —
-            a concept rooted in{" "}
-            <span className="text-purple-400 font-semibold">Schrödinger’s Cat</span>{" "}
+            <span className="text-purple-400 font-semibold">Pi (π)</span> is a
+            multiverse generator based on the concept that every person has
+            countless alternate versions of themselves across infinite universes
+            — a concept rooted in{" "}
+            <span className="text-purple-400 font-semibold">
+              Schrödinger’s Cat
+            </span>{" "}
             and modern quantum interpretation theories.
           </p>
 
@@ -105,23 +93,22 @@ export default function AppAboutSection() {
               π = 3.14159265358979…
             </span>{" "}
             is an irrational number containing *infinite non-repeating digits*.
-            Many mathematicians and physicists see π as a symbolic mirror of
-            all possible realities:
+            Many mathematicians and physicists see π as a symbolic mirror of all
+            possible realities:
           </p>
 
           <ul className="list-disc ml-6 space-y-2">
             <li>Your full name appears somewhere inside π.</li>
             <li>A different version of you appears elsewhere inside it.</li>
             <li>
-              Every event, dream, memory, and possible timeline is encoded in its
-              infinite sequence.
+              Every event, dream, memory, and possible timeline is encoded in
+              its infinite sequence.
             </li>
           </ul>
 
           <p>
             π becomes a mathematical metaphor for the multiverse — infinite,
-            branching, and echoing every possible you. Pi is built on this
-            idea.
+            branching, and echoing every possible you. Pi is built on this idea.
           </p>
         </CardContent>
       </Card>
@@ -146,13 +133,14 @@ export default function AppAboutSection() {
             <li>In one reality, you’re a hacker.</li>
             <li>In another, you’re a warrior.</li>
             <li>
-              Somewhere, you became a philosopher, engineer, musician, pilot, or mystic.
+              Somewhere, you became a philosopher, engineer, musician, pilot, or
+              mystic.
             </li>
           </ul>
 
           <p>
-            Pi visualizes these branching identities — giving form to
-            versions of you that may already exist in parallel timelines.
+            Pi visualizes these branching identities — giving form to versions
+            of you that may already exist in parallel timelines.
           </p>
         </CardContent>
       </Card>

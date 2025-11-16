@@ -63,7 +63,7 @@ const RegisterForm = () => {
       transition={{ duration: 0.6 }}
       className="flex justify-center items-center min-h-screen px-4"
     >
-      <Card className="w-full max-w-md bg-[#12031b] border border-purple-700/40 shadow-[0_0_25px_rgba(168,85,247,0.25)] rounded-2xl">
+      <Card className="w-full max-w-lg bg-[#12031b] border border-purple-700/40 shadow-[0_0_25px_rgba(168,85,247,0.25)] rounded-2xl">
         <CardContent className="p-6 space-y-6 text-purple-200">
           <h2 className="text-center text-2xl font-semibold text-purple-200">
             <span className="font-light opacity-60">Create your </span>π{" "}

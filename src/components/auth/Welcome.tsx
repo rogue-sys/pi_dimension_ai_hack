@@ -10,7 +10,7 @@ export default function Welcome() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="w-full max-w-xl mx-auto"
+      className="w-full max-w-4xl mx-auto"
     >
       <Card className="bg-[#12031b] border border-purple-700/40 shadow-[0_0_25px_rgba(168,85,247,0.25)] rounded-2xl">
         <CardContent className="space-y-6 text-sm sm:text-base">

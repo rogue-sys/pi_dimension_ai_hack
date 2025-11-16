@@ -1,8 +1,8 @@
-// models/realityResult.model.ts
-import mongoose, { Schema, model, Model, Document } from "mongoose";
+import mongoose, { Schema, model, Model, Document, Types } from "mongoose";
 
-export interface IRealityResult extends Document {
-  userId: string; // reference to the user
+export interface RealityResultType {
+  _id: Types.ObjectId;
+  userId: Types.ObjectId;
   generatedProfile: {
     alternate_universe_dob: string;
     backstory: string;
@@ -23,9 +23,16 @@ export interface IRealityResult extends Document {
   updatedAt: Date;
 }
 
+export interface IRealityResult extends Document, Omit<RealityResultType, '_id'> { }
+
 const RealityResultSchema: Schema<IRealityResult> = new Schema(
   {
-    userId: { type: String, required: true, index: true },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true
+    },
     generatedProfile: {
       alternate_universe_dob: { type: String, required: true },
       backstory: { type: String, required: true },
@@ -47,4 +54,5 @@ const RealityResultSchema: Schema<IRealityResult> = new Schema(
 );
 
 export const RealityResult: Model<IRealityResult> =
-  mongoose.models.RealityResult || model<IRealityResult>("RealityResult", RealityResultSchema);
+  mongoose.models.RealityResult ||
+  model<IRealityResult>("RealityResult", RealityResultSchema);

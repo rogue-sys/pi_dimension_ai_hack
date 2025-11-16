@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export function ProfileMenu({
   name,
@@ -38,15 +40,14 @@ export function ProfileMenu({
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          onClick={() => console.log("Edit Profile")}
-          className="cursor-pointer"
-        >
-          Edit Profile
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href={"/profile/edit"} className="w-full h-full">
+            Edit Profile
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          onClick={() => console.log("Logout")}
+          onClick={() => signOut({ callbackUrl: "/" })}
           className="cursor-pointer text-red-500 focus:text-red-600"
         >
           Logout
