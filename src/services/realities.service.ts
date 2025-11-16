@@ -3,24 +3,22 @@
 import { connectDB } from "@/lib/db";
 import { RealityResult, RealityResultType } from "@/models/realityResult.model";
 import { auth } from "./common.service";
+import { redirect } from "next/navigation";
 
 export async function getUserRealities() {
+    const session = await auth();
+    if (!session || !session.user?.id) {
+        redirect('/')
+    }
     try {
         await connectDB();
 
-        const session = await auth();
-        if (!session || !session.user?.id) {
-            return {
-                success: false,
-                error: "Unauthorized",
-                realities: []
-            };
-        }
 
         const realities = await RealityResult
             .find({ userId: session.user.id })
             .sort({ createdAt: -1 });
 
+        console.log(realities)
         return {
             success: true,
             realities: JSON.parse(JSON.stringify(realities)) as RealityResultType[],

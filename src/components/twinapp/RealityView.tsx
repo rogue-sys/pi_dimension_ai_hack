@@ -33,7 +33,7 @@ export default function RealityView({
           <div className="flex flex-col items-center text-center">
             <div className="w-full overflow-hidden rounded-l ">
               <Image
-                src={gp.portrait || "/defaultProfile.png"}
+                src={ "/defaultProfile.png"}
                 alt="Portrait"
                 width={400}
                 height={500}
@@ -42,12 +42,12 @@ export default function RealityView({
             </div>
 
             <h2 className="text-xl font-semibold text-purple-400 mt-4">
-              {gp.name || "Unknown"}
+              {gp?.name || "Unknown"}
             </h2>
 
             <p className="text-sm text-purple-400 mt-2">
               <span className="font-semibold">Archetype:</span>{" "}
-              {gp.archetype || "N/A"}
+              {gp?.archetype || "N/A"}
             </p>
           </div>
         </Card>
@@ -60,11 +60,11 @@ export default function RealityView({
             </h3>
 
             <p className="mt-3 whitespace-pre-line text-purple-300">
-              {gp.backstory}
+              {gp?.backstory}
             </p>
           </Card>
 
-          <RealityLocation coordinates={gp.location_coordinates} />
+          <RealityLocation coordinates={gp?.location_coordinates} />
 
           <Card className="bg-[#12071c] gap-2 border-purple-800/40 p-5">
             <h3 className="text-lg text-purple-300 font-semibold mb-3 flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function RealityView({
               Major Achievements
             </h3>
             <ul className="space-y-1 text-purple-300">
-              {gp.major_achievements.map((a, i) => (
+              {gp?.major_achievements.map((a, i) => (
                 <li key={i}>• {a}</li>
               ))}
             </ul>
@@ -84,7 +84,7 @@ export default function RealityView({
               Personality Traits
             </h3>
             <ul className="space-y-1 text-purple-300">
-              {gp.personality_traits.map((t, i) => (
+              {gp?.personality_traits.map((t, i) => (
                 <li key={i}>• {t}</li>
               ))}
             </ul>
@@ -97,7 +97,7 @@ export default function RealityView({
                 Strengths
               </h3>
               <ul className="space-y-1 text-purple-300">
-                {gp.strengths.map((s, i) => (
+                {gp?.strengths.map((s, i) => (
                   <li key={i}>• {s}</li>
                 ))}
               </ul>
@@ -109,7 +109,7 @@ export default function RealityView({
                 Weaknesses
               </h3>
               <ul className="space-y-1 text-purple-300">
-                {gp.weaknesses.map((w, i) => (
+                {gp?.weaknesses.map((w, i) => (
                   <li key={i}>• {w}</li>
                 ))}
               </ul>
@@ -127,7 +127,7 @@ export default function RealityView({
               Friends:
             </p>
             <ul className="space-y-1 mb-4 text-purple-300">
-              {gp.friends_and_rivals.friends.map((f, i) => (
+              {gp?.friends_and_rivals.friends.map((f, i) => (
                 <li key={i}>• {f}</li>
               ))}
             </ul>
@@ -137,7 +137,7 @@ export default function RealityView({
               Rivals:
             </p>
             <ul className="space-y-1 text-purple-300">
-              {gp.friends_and_rivals.rivals.map((r, i) => (
+              {gp?.friends_and_rivals.rivals.map((r, i) => (
                 <li key={i}>• {r}</li>
               ))}
             </ul>
