@@ -33,13 +33,10 @@ type CoreIdentityStepProps = {
 
 export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
   const [profilePicFile, setProfilePicFile] = useState<File | null>(null);
-  const [profilePicPreview, setProfilePicPreview] = useState<string | null>(
-    null
-  );
+  const [profilePicPreview, setProfilePicPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
   const [interestsInput, setInterestsInput] = useState<string>("");
 
   const profilePicInputRef = useRef<HTMLInputElement | null>(null);
@@ -57,15 +54,19 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
       gender: "",
       interests: [],
       preference: "",
+      place: "",
+      language: "", // ⭐ ADDED
     },
   });
 
+  // Load initial data
   useEffect(() => {
     if (!initialData) return;
 
     form.reset({
       ...initialData,
       interests: initialData.interests || [],
+      language: initialData.language || "", // ⭐ ADDED
     });
 
     setInterestsInput((initialData.interests || []).join(", "));
@@ -91,37 +92,36 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
   }, [profilePicFile]);
 
   const MAX_PROFILE_PIC_MB = 1;
-  const MAX_ADDITIONAL_MB = 10;
-  const MIN_ADDITIONAL_COUNT = 3;
 
   function validateProfileImages(profilePic: File | null) {
     if (!profilePic) {
       toast.error("Profile picture is required.");
       return false;
     }
-
     if (profilePic.size > MAX_PROFILE_PIC_MB * 1024 * 1024) {
       toast.error("Profile picture must be smaller than 1 MB.");
       return false;
     }
-
     return true;
   }
 
   const onSubmit = async (values: FullProfileData) => {
     const isValid = validateProfileImages(profilePicFile);
     if (!isValid) return;
+
     setLoading(true);
-    const formData = new FormData();
+
     const interestsArray = interestsInput
       ? interestsInput.split(",").map((s) => s.trim())
       : [];
 
+    const formData = new FormData();
     formData.append(
       "data",
       JSON.stringify({
         ...values,
         interests: interestsArray,
+        language: values.language, // ⭐ ADDED
       })
     );
 
@@ -130,6 +130,7 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
     const result = await saveCoreIdentity(formData);
 
     setLoading(false);
+
     if (!result.success) toast.error(result.error);
   };
 
@@ -158,6 +159,7 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                 )}
               </h2>
 
+              {/* Profile Pic */}
               <div className="flex justify-center mb-5">
                 <div
                   className="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-2 border-purple-500 overflow-hidden cursor-pointer hover:opacity-80"
@@ -187,18 +189,17 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
               </div>
 
               <div className="grid md:grid-cols-2 gap-5 ">
+                {/* Name */}
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-purple-300">
-                        Full Name
-                      </FormLabel>
+                      <FormLabel className="text-purple-300">Full Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter your full name"
-                          className="bg-[#1c0b2b]!   border-purple-600/40"
+                          className="bg-[#1c0b2b]! border-purple-600/40"
                           {...field}
                         />
                       </FormControl>
@@ -207,6 +208,7 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                   )}
                 />
 
+                {/* DOB */}
                 <FormField
                   control={form.control}
                   name="dateOfBirth"
@@ -218,8 +220,7 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                       <FormControl>
                         <Input
                           type="date"
-                          placeholder="Select your birth date"
-                          className="bg-[#1c0b2b]! text-white border-purple-600/40"
+                          className="bg-[#1c0b2b]! border-purple-600/40"
                           {...field}
                         />
                       </FormControl>
@@ -227,6 +228,29 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Language ⭐ NEW FIELD */}
+                <FormField
+                  control={form.control}
+                  name="language"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-purple-300">
+                        Preferred Language ⭐
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g., Malayalam, Hindi, Tamil, English"
+                          className="bg-[#1c0b2b]! border-purple-600/40"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Appearance */}
                 <FormField
                   control={form.control}
                   name="appearance"
@@ -246,14 +270,14 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Personality */}
                 <FormField
                   control={form.control}
                   name="personality"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-purple-300">
-                        Personality
-                      </FormLabel>
+                      <FormLabel className="text-purple-300">Personality</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Your personality"
@@ -265,6 +289,8 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Additional Traits */}
                 <FormField
                   control={form.control}
                   name="additionalTraits"
@@ -284,14 +310,14 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Vibe Style */}
                 <FormField
                   control={form.control}
                   name="vibeStyle"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-purple-300">
-                        Vibe / Style
-                      </FormLabel>
+                      <FormLabel className="text-purple-300">Vibe / Style</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Describe your style or vibe"
@@ -303,14 +329,14 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Sexuality */}
                 <FormField
                   control={form.control}
                   name="sexuality"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-purple-300">
-                        Sexuality
-                      </FormLabel>
+                      <FormLabel className="text-purple-300">Sexuality</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="e.g., Heterosexual, Bisexual..."
@@ -322,6 +348,8 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Gender */}
                 <FormField
                   control={form.control}
                   name="gender"
@@ -339,6 +367,8 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Interests */}
                 <FormField
                   control={form.control}
                   name="interests"
@@ -371,14 +401,13 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                   )}
                 />
 
+                {/* Preference */}
                 <FormField
                   control={form.control}
                   name="preference"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-purple-300">
-                        Preference
-                      </FormLabel>
+                      <FormLabel className="text-purple-300">Preference</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Your preference"
@@ -390,6 +419,8 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                     </FormItem>
                   )}
                 />
+
+                {/* Place */}
                 <FormField
                   control={form.control}
                   name="place"
@@ -410,21 +441,14 @@ export default function ProfileForm({ initialData }: CoreIdentityStepProps) {
                   )}
                 />
               </div>
+
+              {/* Submit */}
               <Button
                 type="submit"
                 disabled={loading}
                 className="w-full bg-purple-600 hover:bg-purple-700 py-5 flex items-center justify-center gap-2"
               >
-                {loading ? (
-                  <>
-                    <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
-                    Saving...
-                  </>
-                ) : initialData ? (
-                  "Save"
-                ) : (
-                  "→ Next: Mental Configuration"
-                )}
+                {loading ? "Saving..." : "Save & Continue"}
               </Button>
             </CardContent>
           </form>

@@ -12,6 +12,7 @@ export const FullProfileSchema = z.object({
   interests: z.array(z.string().min(1)).min(1, "At least one interest is required"),
   preference: z.string().min(1, "Preference is required"),
   place:  z.string("place is required").min(1, "place is required"),
+  language: z.string("language is required").min(1, "language is required"),
 });
 
 export type FullProfileData = z.infer<typeof FullProfileSchema>;

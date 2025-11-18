@@ -43,7 +43,8 @@ export async function saveCoreIdentity(formData: FormData) {
       interests,
       preference,
       place,
-      name
+      name,
+      language
     } = parsed.data;
 
 
@@ -84,6 +85,7 @@ export async function saveCoreIdentity(formData: FormData) {
         preference,
         place,
         name,
+        language,
         ...(profile_pic && { profile_pic }),
       },
       { new: true, upsert: true, setDefaultsOnInsert: true }

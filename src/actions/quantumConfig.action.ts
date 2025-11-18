@@ -22,26 +22,29 @@ export async function generateReality(quantumData: {
 
     // 2️⃣ Fetch user profile
     const profileDoc = await Profile.findOne({ userId });
-    if (!profileDoc)
-      return { success: false, error: "User profile not found" };
+    if (!profileDoc) return { success: false, error: "User profile not found" };
 
     const profile = profileDoc.toObject();
 
     // 3️⃣ Enhanced World-Building Prompt
     const systemPrompt = `
 You are an advanced world-simulation AI tasked with generating detailed alternate-universe doppelganger identities.
-Your job is to merge the user’s real traits with the selected archetype and universe-focus,
-and produce a fully consistent, lore-accurate character profile.
+Your job is to merge the user’s real traits with the selected archetype, universe-focus, language, and place,
+and produce a fully consistent, lore-accurate, place-aware alternate reality profile.
 
 Your output MUST:
 1. Be valid JSON.
 2. Exactly match the RealityResult.generatedProfile schema.
 3. Be highly descriptive, imaginative, and immersive.
-4. Remain internally consistent with all traits provided.
-5. Include a "what_is_he_doing_now" array, structured as shown below, for future activities.
-6. Contain no commentary, disclaimers, or extra text outside the JSON.
+4. Be written COMPLETELY in the user's selected language.
+5. Strongly incorporate the user's selected real-world place:
+   - The alternate reality must include this place's environment, culture, people, traditions, climate, architecture, food, lifestyle, and world perception.
+   - The place should influence personality, backstory, and current reality.
+6. Remain internally consistent with all traits provided.
+7. Include a "what_is_he_doing_now" array, structured exactly as shown.
+8. Contain no commentary, no explanations, and no extra text outside the JSON.
 
-The generated JSON MUST match this schema exactly:
+The generated JSON MUST match this schema EXACTLY:
 
 {
   "archetype": "string",
@@ -85,23 +88,33 @@ The generated JSON MUST match this schema exactly:
   ]
 }
 
-REQUIREMENTS:
-- Archetype controls world logic, culture, tone.
-- Universe focus affects environment, lifestyle, and worldview.
+ADDITIONAL REQUIREMENTS:
+- Archetype controls the world's logic, culture, tone, and role.
+- Universe focus changes environment, lifestyle, and worldview.
+- Output language MUST be exactly the user's selected language with no mixing.
+- The user’s selected place must shape:
+  * traditions
+  * geography
+  * architecture
+  * climate
+  * daily life
+  * cultural norms
+  * personality development
+  * backstory and achievements
+  * current surroundings
 - Personality must be a recognizable but exaggerated reflection of the user's traits.
-- Backstory must include origins, culture, environment, emotional depth, and major turning points.
-- Achievements must feel earned and specific.
-- Weaknesses must feel meaningful and psychologically grounded.
-- Coordinates MUST make sense for the world.
-- "what_is_he_doing_now" must be an array of objects with the structure:
+- Backstory must include origins, emotional depth, cultural influences from the chosen place, and major turning points.
+- Achievements must be earned and specific.
+- Weaknesses must be psychologically meaningful.
+- Coordinates MUST make sense for the world or fictional universe.
+- "what_is_he_doing_now" must be an array of objects exactly like:
   { "content": "<activity description>", "time": "<ISO timestamp>", "coordinate": "<location>" }
 - NO extra text outside the JSON.
 `;
 
-
     const userQuery = `
 USER TRAITS:
-- Name : ${profile.name}
+- Name: ${profile.name}
 - Actual Appearance: ${profile.appearance}
 - Date of Birth: ${profile.dateOfBirth}
 - Personality Keywords: ${profile.personality}
@@ -112,6 +125,10 @@ USER TRAITS:
 - Interests: ${profile.interests.join(", ")}
 - Preference: ${profile.preference}
 - Place/Nationality: ${profile.place}
+
+USER CUSTOMIZATION:
+- Selected Output Language: ${profile.language}
+- User's Selected Place to Integrate Into Reality: ${profile.place}
 
 SELECTED UNIVERSE INPUTS:
 - Archetype: "${quantumData.archetype}"
@@ -140,12 +157,9 @@ SELECTED UNIVERSE INPUTS:
     });
     console.log("Saved RealityResult _id:", savedResult._id);
 
-
     return { success: true, realityId: savedResult._id };
   } catch (err: any) {
     console.error("GENERATE REALITY ERROR:", err);
     return { success: false, error: err.message };
   }
 }
-
-

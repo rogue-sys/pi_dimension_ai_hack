@@ -18,6 +18,7 @@ export interface UserProfile {
   interests: string[];
   preference: string;
   place: string;
+  language: string;
 
   createdAt: Date;
 }
@@ -91,6 +92,11 @@ const UserProfileSchema = new mongoose.Schema<IUserProfile>(
     },
 
     place: {
+      type: String,
+      default: "",
+    },
+
+    language: {
       type: String,
       default: "",
     },
